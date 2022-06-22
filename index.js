@@ -5,10 +5,11 @@ const port = 3000
 
 // use pug.js as template engine
 app.set('view engine', 'pug')
+app.set("views", "./views");
 
 // handlers
 app.get('/', (_, res) => {
-  res.render('index', { title: 'key', message: 'Hello there!' })
+  res.render('index', { title: 'Hey', message: 'Hello, there' })
 })
 
 app.listen(port, () => {
