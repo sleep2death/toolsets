@@ -7,13 +7,19 @@ html(lang="en")
     style
       include dist/main.css
   body
-    div(class="bg-slate-200")= message 
-    div.list-container
-      div.stack-list
-        div.draggable.item A
-      div.stack-list
-        div.draggable.item B
-      div.stack-list
-        div.draggable.item C
+    .bg-slate-200= message
+    .content
+      .list-container
+        .column
+          .stack-list
+            .draggable.card A
+        .column
+          .stack-list
+            .draggable.card B
+        .column
+          .stack-list
+            .draggable.card C
+            .draggable.card D
+            .draggable.card E
     script
       include dist/bundle.js

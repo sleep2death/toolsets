@@ -124,6 +124,13 @@
   dependencies:
     debug "^4.3.1"
 
+"@prettier/plugin-pug@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.npmmirror.com/@prettier/plugin-pug/-/plugin-pug-2.1.0.tgz#d8947efab45df50943c8aece52f0cf475c305c4f"
+  integrity sha512-/APVcAy5d1K//srAF4IY7lzaEEwRjhL//PfcFvqYdsbJWkbRz1JKZkhSS4cSwTxV8eoipgIu5vvUeH9ZJX4Yqw==
+  dependencies:
+    pug-lexer "^5.0.0"
+
 "@shopify/draggable@^1.0.0-beta.8":
   version "1.0.0-beta.8"
   resolved "https://registry.npmmirror.com/@shopify/draggable/-/draggable-1.0.0-beta.8.tgz#2eb3c2f72298ce3e53fe16f34ab124cc495cd4fc"
@@ -1547,6 +1554,11 @@ prelude-ls@~1.1.2:
   resolved "https://registry.npmmirror.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w==
 
+prettier@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.npmmirror.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
+  integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
+
 promise@^7.0.1:
   version "7.3.1"
   resolved "https://registry.npmmirror.com/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
@@ -1627,7 +1639,7 @@ pug-filters@^4.0.0:
     pug-walk "^2.0.0"
     resolve "^1.15.1"
 
-pug-lexer@^5.0.1:
+pug-lexer@^5.0.0, pug-lexer@^5.0.1:
   version "5.0.1"
   resolved "https://registry.npmmirror.com/pug-lexer/-/pug-lexer-5.0.1.tgz#ae44628c5bef9b190b665683b288ca9024b8b0d5"
   integrity sha512-0I6C62+keXlZPZkOJeVam9aBLVP2EnbeDw3An+k0/QlqdwH6rv8284nko14Na7c0TtqtogfWXcRoFE4O4Ff20w==

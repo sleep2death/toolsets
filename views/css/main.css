@@ -250,10 +250,25 @@ textarea {
   }
 }
 
+html,
+body,
+.content,
 .list-container {
-  @apply flex flex-row
+  @apply w-full h-full;
+}
+
+.list-container {
+  @apply flex flex-row;
+}
+
+.column {
+  @apply grow flex flex-col h-full;
 }
 
 .stack-list {
-  @apply grow flex flex-col
+  @apply h-full;
+}
+
+.draggable.card {
+  @apply cursor-move w-full;
 }
