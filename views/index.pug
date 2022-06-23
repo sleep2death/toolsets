@@ -1,14 +1,19 @@
 doctype html
-html
+html(lang="en")
   head
     title= title
-    meta(name="viewport", content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0")
     meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
     style
       include dist/main.css
   body
-    // div#container(class="bg-slate-400")
     div(class="bg-slate-200")= message 
+    div.list-container
+      div.stack-list
+        div.draggable.item A
+      div.stack-list
+        div.draggable.item B
+      div.stack-list
+        div.draggable.item C
     script
       include dist/bundle.js
-

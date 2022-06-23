@@ -124,6 +124,11 @@
   dependencies:
     debug "^4.3.1"
 
+"@shopify/draggable@^1.0.0-beta.8":
+  version "1.0.0-beta.8"
+  resolved "https://registry.npmmirror.com/@shopify/draggable/-/draggable-1.0.0-beta.8.tgz#2eb3c2f72298ce3e53fe16f34ab124cc495cd4fc"
+  integrity sha512-9IeBPQM93Ad4qFKUopwuTClzoST/1OId4MaSd/8FB5ScCL2tl25UaOGNR8E2hjiL7xK4LN5+I1Ews6amS7YAiA==
+
 "@swc/cli@^0.1.57":
   version "0.1.57"
   resolved "https://registry.npmmirror.com/@swc/cli/-/cli-0.1.57.tgz#a9c424de5a217ec20a4b7c2c0e5c343980537e83"
