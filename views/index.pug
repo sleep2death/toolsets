@@ -2,13 +2,36 @@ doctype html
 html
   head
     title= title
-    meta(name="viewport", content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0")
+    meta(
+      name="viewport",
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    )
     meta(charset="utf-8")
     style
       include dist/main.css
   body
-    // div#container(class="bg-slate-400")
-    div(class="bg-slate-200")= message 
-    script
-      include dist/bundle.js
+    include icon
+    include modal
 
+    .container-2xl.h-full.w-full
+      .flex.flex-col.h-full
+        include banner
+        .flex.flex-row.h-full
+          .list.border-r
+            .list-header.bg-cyan-100
+              +icon("M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z")
+              div TODO
+            .content
+          .list.border-r.flex-1
+            .list-header.bg-amber-100
+              +icon("M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4")
+              div IN PROGRESS
+          .list.border-r
+            .list-header.bg-lime-100
+              +icon("M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4")
+              div DONE
+
+    +modal('modal-new', 'Create New Task')
+    script
+      include ../node_modules/jquery/dist/jquery.min.js
+      include dist/bundle.js
