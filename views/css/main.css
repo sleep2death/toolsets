@@ -23,6 +23,10 @@ button {
   @apply flex flex-row justify-center;
 }
 
+.banner-header {
+  @apply flex flex-row text-lg;
+}
+
 /**************************\
   Basic Modal Styles
 \**************************/

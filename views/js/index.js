@@ -5,5 +5,5 @@ MicroModal.init({
 });
 
 $("#new").on("click", function (_) {
-  MicroModal.show("modal-new");
+  MicroModal.show("modal-login");
 });
