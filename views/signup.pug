@@ -1,0 +1,12 @@
++modal('modal-signup', 'Signup')
+  form#form-signup(data-parsley-validate).flex.flex-col.space-y-1
+    label(for="email") Email * :
+    input(type="email" class="form-control" name="email" data-parsley-trigger="change" required)
+
+    label(for="password") Password * :
+    input#password(type="password" class="form-control" name="password" data-parsley-trigger="change" data-parsley-password required)
+
+    label(for="password") Re-enter Password * :
+    input(type="password" class="form-control" name="re-password" data-parsley-trigger="change" data-parsley-equalto="#password" required)
+    .flex.flex-row.justify-end 
+      input#signup-btn.mt-4.h-10.w-20.rounded-md(type="submit" class="btn" value="Signup")
