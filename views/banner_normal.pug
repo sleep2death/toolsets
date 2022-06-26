@@ -1,0 +1,11 @@
+.flex.flex-row.w-full.justify-between
+  include button
+  if token.length > 0
+    #token.hidden= token
+  .banner-header
+    div Toolset
+  .banner-body
+  .banner-foot.flex.flex-row
+    +button("logout", "M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1", "Logout")
+    .border-slate-400.border-r
+    +button("settings", "M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z", "Settings")

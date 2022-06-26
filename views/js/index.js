@@ -60,13 +60,16 @@ $("#form-login").on("submit", function (evt) {
     url: "/ws/login",
     data: JSON.stringify(formData),
     contentType: "application/json; charset=utf-8",
-    dataType: "json",
     success: (res) => {
       $("#modal-login .info").toggleClass("success", true);
       $("#modal-login .info").toggle(true);
       $("#modal-login .info .title").text("success: ");
 
-      localStorage.setItem("jwt", res.token);
+      // store token
+      // localStorage.setItem("jwt", res.token);
+      $(".header").html(res);
+      console.log($("#token").text());
+
       // close signup modal
       setTimeout(function () {
         MicroModal.close();

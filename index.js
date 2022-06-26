@@ -46,7 +46,7 @@ app.post("/ws/signup", getSignupHandler(rds));
 app.post("/ws/login", getLoginHandler(rds));
 
 app.listen(port, () => {
-  console.log(`template app listening on port ${port}`);
+  console.log(`user app listening on port ${port}`);
 });
 
 const saltRounds = 10;
@@ -111,12 +111,11 @@ function getLoginHandler(rdb) {
       return res.status(401).send({ ok: false, msg: "password not match" });
     }
 
-    const token = jwt.sign(
-      { uuid: uuid, nickname: user.nickname, email: user.email },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: "1800s" }
-    );
+    // sign token for user
+    const token = jwt.sign({ uuid: uuid }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1800s",
+    });
 
-    return res.status(200).send({ ok: true, token: token });
+    res.status(200).render("banner_normal", { token: token });
   };
 }
