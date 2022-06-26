@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       script: "index.js",
-      watch: ["./src/*.js", "./index.js"],
+      watch: ["./lib/*.js", "./index.js"],
       name: "express",
     },
     {

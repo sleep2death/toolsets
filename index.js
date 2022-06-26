@@ -1,14 +1,13 @@
-import crypto from "crypto";
-
 import express from "express";
-import assert from "node:assert";
-
-import bcrypt from "bcrypt";
-import expressjwt from "express-jwt";
-import dotenv from "dotenv";
+import morgan from "morgan";
 import jwt from "jsonwebtoken";
 
+import assert from "node:assert";
+import dotenv from "dotenv";
+
 import { createClient } from "redis";
+
+import { getSignupHandler, getLoginHandler } from "./lib/auth.js";
 
 dotenv.config();
 
@@ -26,96 +25,55 @@ const port = 3000;
 app.set("view engine", "pug");
 app.set("views", "./views");
 
-app.use(express.json());
-
-function errorHandler(err, _, res, next) {
-  if (res.headersSent) {
-    return next(err);
-  }
-  res.status(500);
-  res.render("error", { error: err });
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+} else {
+  app.use(morgan("common"));
 }
-app.use(errorHandler);
+// parse json form
+app.use(express.json()); // for json
+app.use(express.urlencoded({ extended: true })); // for form data
 
-// handlers
-app.get("/", (_, res) => {
-  res.render("index", { title: "Hey", message: "Hello, there" });
+function auth(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, uuid) => {
+    console.log(err);
+    if (err) return res.sendStatus(403);
+    req.uuid = uuid;
+    next();
+  });
+}
+
+// home page
+app.get("/", (req, res) => {
+  if (req.query.token) {
+    res.render("index", { token: req.query.token });
+  }
+  res.render("index");
 });
 
-app.post("/ws/signup", getSignupHandler(rds));
-app.post("/ws/login", getLoginHandler(rds));
+app.get("/index-auth", auth, (_, res) => {
+  res.render("index-auth");
+});
+
+// handlers
+app.get("/signup", (_, res) => {
+  res.render("signup");
+});
+
+// handlers
+app.get("/login", (_, res) => {
+  res.render("login");
+});
+
+// auth handlers
+app.post("/signup", getSignupHandler(rds));
+app.post("/login", getLoginHandler(rds));
 
 app.listen(port, () => {
   console.log(`user app listening on port ${port}`);
 });
-
-const saltRounds = 10;
-
-function getSignupHandler(rdb) {
-  const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return async (req, res) => {
-    if (!req.body.email || !req.body.email.match(emailReg)) {
-      return res.status(400).send({ ok: false, msg: "email invalid" });
-    }
-
-    if (
-      !req.body.password ||
-      req.body.password.length < 6 ||
-      req.body.password !== req.body["re-password"]
-    ) {
-      return res.status(400).send({ ok: false, msg: "password invalid" });
-    }
-
-    // check if email exists
-    const email_exists = await rdb.exists(`email:${req.body.email}`);
-    if (email_exists) {
-      return res.status(409).send({ ok: false, msg: "email already exists" });
-    }
-
-    // create user uuid
-    const uuid = crypto.randomUUID();
-    const password = await bcrypt.hash(req.body.password, saltRounds);
-
-    let createRes = await rdb
-      .multi()
-      .set(`email:${req.body.email}`, uuid)
-      .hSet(`uuid:${uuid}`, "password", password)
-      .hSet(`uuid:${uuid}`, "email", req.body.email)
-      .hSet(`uuid:${uuid}`, "nickname", req.body.nickname)
-      .exec();
-    assert.deepEqual(createRes, ["OK", 1, 1, 1]);
-    res.send({ ok: true });
-  };
-}
-
-function getLoginHandler(rdb) {
-  const emailReg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return async (req, res) => {
-    if (!req.body.email || !req.body.email.match(emailReg)) {
-      return res.status(400).send({ ok: false, msg: "email invalid" });
-    }
-
-    if (!req.body.password || req.body.password.length < 6) {
-      return res.status(400).send({ ok: false, msg: "password invalid" });
-    }
-
-    // get uuid by email
-    const uuid = await rdb.get(`email:${req.body.email}`);
-    if (!uuid) {
-      return res.status(404).send({ ok: false, msg: "email not exist" });
-    }
-
-    const user = await rdb.hGetAll(`uuid:${uuid}`);
-    const match = await bcrypt.compare(req.body.password, user.password);
-    if (!match) {
-      return res.status(401).send({ ok: false, msg: "password not match" });
-    }
-
-    // sign token for user
-    const token = jwt.sign({ uuid: uuid }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1800s",
-    });
-
-    res.status(200).render("banner_normal", { token: token });
-  };
-}

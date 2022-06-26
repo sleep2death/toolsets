@@ -64,6 +64,10 @@ input.btn,
   width: 100%;
 }
 
+a {
+  @apply underline text-blue-500;
+}
+
 .btn:disabled {
   @apply cursor-not-allowed bg-gray-200 !important;
 }

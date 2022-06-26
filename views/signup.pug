@@ -1,20 +1,48 @@
-+modal('modal-signup', 'Signup')
-  .info.hidden
-    .flex.flex-row
-      .title.font-semibold.mr-4
-      .message.font-normal
+doctype html
+html
+  head
+    title= Signup
+    meta(
+      name="viewport",
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    )
+    meta(charset="utf-8")
+    style
+      include dist/main.css
+  body
+    .w-full.h-full.flex.justify-center.items-center.bg-slate-300
+      .bg-slate-100.rounded-lg.p-4.w-96 
+        if error
+          .info.error
+            .flex.flex-row
+              .title.font-semibold.mr-4= error.title
+              .message.font-normal= error.message
 
-  form#form-signup(data-parsley-validate).flex.flex-col.space-y-1
-    label(for="email") Email * :
-    input(type="email" class="form-control" name="email" data-parsley-trigger="change" required)
+        form#form-signup(data-parsley-validate).flex.flex-col.space-y-1(action="/signup" method="post")
+          label(for="email") Email * :
+          - var email = form ? form.email : ''
+          input(type="email" name="email" data-parsley-trigger="change" value=email required)
 
-    label(for="password") Password * :
-    input#password(type="password" class="form-control" name="password" data-parsley-trigger="change" data-parsley-password required)
-    label(for="password") Re-enter Password * :
-    input(type="password" class="form-control" name="re-password" data-parsley-trigger="change" data-parsley-equalto="#password" required)
+          - reg = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.* ).{8,16}$"
+          label(for="password") Password * :
+          - var password = form ? form.password : ''
+          input#password(type="password" name="password" data-parsley-trigger="change" data-parsley-pattern=reg value=password required)
 
-    label(for="nickname") Nickname * :
-    input(type="text" class="form-control" name="nickname" data-parsley-trigger="change" data-parsley-minlength="4" data-parsley-maxlength="12" required)
+          label(for="password") Re-enter Password * :
+          - var repassword = form ? form['re-password'] : ''
+          input(type="password" class="form-control" name="re-password" data-parsley-equalto="#password" data-parsley-trigger="change" value=repassword required)
 
-    .flex.flex-row.justify-end
-      input.mt-4.btn(type="submit" value="Signup")
+          - reg = "^[A-Za-z][A-Za-z0-9_]{4,12}$"
+          label(for="nickname") Nickname * :
+          - var nickname = form ? form.nickname : ''
+          input(type="text" class="form-control" name="nickname" data-parsley-trigger="change" data-parsley-pattern=reg value=nickname required)
+
+          .flex.flex-row.justify-end
+            input.mt-4.btn(type="submit" value="Signup")
+        .text-sm.mt-2.float-right.mr-1
+          span or 
+          a(href="/login") Login
+
+    script
+      include ../node_modules/jquery/dist/jquery.min.js
+      include ../node_modules/parsleyjs/dist/parsley.min.js
