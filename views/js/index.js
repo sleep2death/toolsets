@@ -1,61 +1,140 @@
 import MicroModal from "micromodal";
-MicroModal.init({
-  onShow: (modal) => console.info(`${modal.id} is shown`),
-  debugMode: true,
-});
+MicroModal.init({});
 
-window.Parsley.addValidator('password', {
-  requirementType: 'string',
+window.Parsley.addValidator("password", {
+  requirementType: "string",
   validateString: function (value) {
-    const res = checkPasswordValidity(value)
+    const res = checkPasswordValidity(value);
     if (res === null) {
-      return true
+      return true;
     }
-
-    console.warn(res)
-    return false
+    return false;
   },
   messages: {
-    en: 'Password invalid'
-  }
-})
+    en: "Password invalid",
+  },
+});
 
-$("#new").on("click", function (_) {
-  MicroModal.show("modal-login");
+$("#login").on("click", function (_) {
+  MicroModal.show("modal-login", {
+    onClose: (modal) => {
+      $(`#${modal.id} .info`).toggle(false);
+    },
+  });
 });
 
 $("#signup").on("click", function (_) {
-  MicroModal.close();
-  MicroModal.show("modal-signup");
+  MicroModal.show("modal-signup", {
+    onClose: (modal) => {
+      $(`#${modal.id} .info`).toggle(false);
+    },
+  });
 });
 
-$.fn.serializeObject = function() {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function() {
-            if (o[this.name]) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return o;
-    };
+$.fn.serializeObject = function () {
+  var o = {};
+  var a = this.serializeArray();
+  $.each(a, function () {
+    if (o[this.name]) {
+      if (!o[this.name].push) {
+        o[this.name] = [o[this.name]];
+      }
+      o[this.name].push(this.value || "");
+    } else {
+      o[this.name] = this.value || "";
+    }
+  });
+  return o;
+};
 
-$("#form-signup").on('submit',function( evt ) {
+$("#form-login").on("submit", function (evt) {
   evt.preventDefault();
+
+  if ($(".parsley-error:visible").length > 0) return;
+
   var formData = $(this).serializeObject();
-  console.log(formData);
+  $("#modal-login .btn").attr("disabled", true);
+
+  $.ajax({
+    type: "POST",
+    url: "/ws/login",
+    data: JSON.stringify(formData),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: (res) => {
+      $("#modal-login .info").toggleClass("success", true);
+      $("#modal-login .info").toggle(true);
+      $("#modal-login .info .title").text("success: ");
+
+      localStorage.setItem("jwt", res.token);
+      // close signup modal
+      setTimeout(function () {
+        MicroModal.close();
+      }, 600);
+    },
+    error: (err) => {
+      $("#modal-login .info").toggleClass("error", true);
+      $("#modal-login .info").toggleClass("success", false);
+      $("#modal-login .info").toggle(true);
+      $("#modal-login .info .title").text("Failed: ");
+
+      if (err.responseJSON && err.responseJSON.msg) {
+        $("#modal-login .info .message").text(err.responseJSON.msg);
+      } else {
+        $("#modal-login .info .message").text("Unknown error");
+      }
+
+      setTimeout(function () {
+        $("#modal-login .btn").attr("disabled", false);
+      }, 600);
+    },
+  });
 });
 
-$(function () {
-  $('#form-login').parsley().on('field:validated', function () {
-    // console.log($('.parsley-error').length)
-  })
-})
+// Signup form submit
+$("#form-signup").on("submit", function (evt) {
+  evt.preventDefault();
+  if ($(".parsley-error:visible").length > 0) return;
+
+  var formData = $(this).serializeObject();
+  $("#modal-signup .btn").attr("disabled", true);
+  $.ajax({
+    type: "POST",
+    url: "/ws/signup",
+    data: JSON.stringify(formData),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: () => {
+      $("#modal-signup .info").toggleClass("success", true);
+      $("#modal-signup .info").toggleClass("error", false);
+      $("#modal-signup .info").toggle(true);
+
+      $("#modal-signup .info .title").text("Success: ");
+      $("#modal-signup .info .message").text("login, please!");
+
+      // close signup modal
+      setTimeout(function () {
+        MicroModal.close();
+      }, 600);
+    },
+    error: (err) => {
+      $("#modal-signup .info").toggleClass("success", false);
+      $("#modal-signup .info").toggleClass("error", true);
+      $("#modal-signup .info").toggle(true);
+
+      $("#modal-signup .info .title").text("Failed: ");
+      if (err.responseJSON && err.responseJSON.msg) {
+        $("#modal-signup .info .message").text(err.responseJSON.msg);
+      } else {
+        $("#modal-signup .info .message").text("Unknown error");
+      }
+
+      setTimeout(function () {
+        $("#modal-signup .btn").attr("disabled", false);
+      }, 600);
+    },
+  });
+});
 
 /**
  * @param {string} value: passwordValue
@@ -81,8 +160,7 @@ const checkPasswordValidity = (value) => {
     return "Password must contain at least one Digit.";
   }
 
-  const isContainsSymbol =
-    /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
+  const isContainsSymbol = /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
   if (!isContainsSymbol.test(value)) {
     return "Password must contain at least one Special Symbol.";
   }
@@ -93,4 +171,4 @@ const checkPasswordValidity = (value) => {
   }
 
   return null;
-}
+};

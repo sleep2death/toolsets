@@ -6,8 +6,11 @@ module.exports = {
       name: "express",
     },
     {
-      script: "yarn spack --config \"$PWD/spack.config.cjs\"",
-      watch: ["./views/js/*.js"],
+      script: 'yarn spack --config "$PWD/spack.config.cjs"',
+      watch: ["./views/js"],
+      watch_delay: 500,
+      autorestart: false,
+      stop_exit_codes: [0],
       name: "swc",
     },
     {

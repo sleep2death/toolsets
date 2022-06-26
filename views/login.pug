@@ -1,10 +1,15 @@
 +modal('modal-login', 'Login')
+  .info.hidden
+    .flex.flex-row
+      .title.font-semibold.mr-4
+      .message.font-normal
+
   form#form-login(data-parsley-validate).flex.flex-col.space-y-1
     label(for="email") Email * :
     input(type="email" class="form-control" name="email" data-parsley-trigger="change" required)
 
     label(for="password") Password * :
     input(type="password" class="form-control" name="password" data-parsley-trigger="change" data-parsley-password required)
-    .flex.flex-row.justify-end 
-      input.mt-4.h-10.w-20.rounded-md(type="submit" class="btn" value="Login")
-      button#signup.mt-4.ml-4.h-10.w-20.rounded-md.bg-slate-400.text-slate-50(class="btn") Signup
+
+    .flex.flex-row.justify-end
+      input.mt-4.btn(type="submit" value="Login")
