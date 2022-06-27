@@ -7,7 +7,8 @@ import dotenv from "dotenv";
 
 import { createClient } from "redis";
 
-import { getSignupHandler, getLoginHandler } from "./lib/auth.js";
+import { ensureAdmin, getSignupHandler, getLoginHandler } from "./lib/auth.js";
+import { getUserInfoHandler } from "./lib/users.js";
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ rds.on("error", (err) => console.error("Redis Client Error", err));
 await rds.connect();
 let res = await rds.ping();
 assert.equal(res, "PONG", "redis ping failed");
+
+await ensureAdmin(rds);
 
 const app = express();
 const port = 3000;
@@ -40,9 +43,9 @@ function auth(req, res, next) {
 
   if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, uuid) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, jwt) => {
     if (err) return res.sendStatus(403);
-    req.uuid = uuid;
+    req.jwt = jwt;
     next();
   });
 }
@@ -52,8 +55,19 @@ app.get("/", (_, res) => {
   res.render("redirect");
 });
 
-app.post("/", auth, (_, res) => {
-  res.render("index");
+app.post("/", auth, getUserInfoHandler(rds), (req, res) => {
+  // delete password from user-info
+  delete req.user.pwd;
+  res.render("index", { user: req.user });
+});
+
+// setting page
+app.get("/settings", (_, res) => {
+  res.render("redirect");
+});
+
+app.post("/settings", auth, (_, res) => {
+  res.render("settings");
 });
 
 // handlers

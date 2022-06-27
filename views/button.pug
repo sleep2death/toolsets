@@ -1,6 +1,12 @@
-mixin button(id, path, title)
+mixin button(id, path, title, selected= false)
   include icon
-  button.h-full.flex.flex-col.justify-center.text-sky-600(id=id class="hover:text-sky-700")
-    .w-32.flex.flex-row.justify-center
-      +icon(path)
-      .select-none= title
+  if selected
+    button.h-full.flex.flex-col.justify-center.text-white.cursor-default(id=id)
+      .flex.flex-row.justify-center.rounded-md.mx-4.bg-sky-600.px-2.py-1
+        +icon(path)
+        .select-none= title
+  else
+    button.h-full.flex.flex-col.justify-center.text-sky-600(id=id class="hover:text-sky-700")
+      .flex.flex-row.justify-center.mx-4
+        +icon(path)
+        .select-none= title
