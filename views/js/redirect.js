@@ -1,13 +1,15 @@
-const token = sessionStorage.getItem("jwt");
-if (!token || token.length === 0) {
+var jwt = sessionStorage.getItem("jwt");
+if (!jwt || jwt.length === 0) {
   window.location.replace("/login");
 }
 
-function loadAuthedPage(url) {
+function loadPage() {
   $.ajax({
-    url: url,
-    headers: { Authorization: "Bearer " + token },
+    url: window.location.pathname,
+    headers: { Authorization: "Bearer " + jwt },
+    method: "POST",
     error: function (err) {
+      console.log(err);
       switch (err.status) {
         case 400:
           console.error("bad request");
@@ -24,9 +26,8 @@ function loadAuthedPage(url) {
       }
     },
     success: function (res) {
-      $("#content").html(res);
+      $("#page-holder").html(res);
     },
   });
 }
-
-loadAuthedPage("index-page");
+loadPage(window.location.pathname);

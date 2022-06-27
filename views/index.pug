@@ -1,21 +1,4 @@
-doctype html
-html
-  head
-    title= title
-    meta(
-      name="viewport",
-      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    )
-    meta(charset="utf-8")
-    style
-      include dist/main.css
-  body
-    #content HOMEPAGE
-  script
-    include ../node_modules/jquery/dist/jquery.min.js
-  if token
-    script.
-      var token = "!{token}"
-      if (token.length > 0) sessionStorage.setItem('jwt', token)
-  script
-    include dist/index.js
+extends html
+
+block content
+  div INDEX PAGE

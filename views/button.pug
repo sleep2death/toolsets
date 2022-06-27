@@ -1,9 +1,6 @@
 mixin button(id, path, title)
   include icon
-  button.h-10.flex.flex-col.justify-center.bg-slate-200(
-    class="hover:text-gray-800 hover:font-semibold hover:border hover:border-slate-400",
-    id=id
-  )
-    .w-32.flex.flex-row.justify-center.text-gray-600
+  button.h-10.flex.flex-col.justify-center.text-gray-600(id=id class="hover:text-blue-500")
+    .w-32.flex.flex-row.justify-center
       +icon(path)
-      .text-gray-600.select-none= title
+      .select-none= title

@@ -48,16 +48,12 @@ function auth(req, res, next) {
 }
 
 // home page
-app.get("/", (req, res) => {
-  if (req.query.token) {
-    res.render("index", { token: req.query.token });
-  } else {
-    res.render("index");
-  }
+app.get("/", (_, res) => {
+  res.render("redirect");
 });
 
-app.get("/index-auth", auth, (_, res) => {
-  res.render("index-auth");
+app.post("/", auth, (_, res) => {
+  res.render("index");
 });
 
 // handlers
