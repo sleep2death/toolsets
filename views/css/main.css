@@ -91,7 +91,7 @@ a {
 }
 
 form label {
-  @apply mb-1;
+  @apply text-sm mb-1 mt-2;
 }
 
 input.parsley-success,

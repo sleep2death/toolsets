@@ -15,7 +15,7 @@ $.fn.serializeObject = function () {
 };
 
 // Signup form submit
-$("#form-signup").on("submit", function (evt) {
+$("#form-login").on("submit", function (evt) {
   evt.preventDefault();
   if ($(".parsley-error:visible").length > 0) return;
 
@@ -24,11 +24,11 @@ $("#form-signup").on("submit", function (evt) {
 
   $.ajax({
     type: "POST",
-    url: "/signup",
+    url: "/login",
     data: JSON.stringify(formData),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    success: () => {
+    success: (res) => {
       $(".info").toggleClass("success", true);
       $(".info").toggleClass("error", false);
       $(".info").toggle(true);
@@ -36,9 +36,11 @@ $("#form-signup").on("submit", function (evt) {
       $(".info .title").text("Success: ");
       $(".info .message").text("redirecting to login page");
 
+      if (res.jwt) sessionStorage.setItem("jwt", res.jwt);
+
       // close signup modal
       setTimeout(function () {
-        window.location.replace("/login");
+        window.location.replace("/");
       }, 600);
     },
     error: (err) => {

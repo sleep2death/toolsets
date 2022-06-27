@@ -41,7 +41,6 @@ function auth(req, res, next) {
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.JWT_SECRET, (err, uuid) => {
-    console.log(err);
     if (err) return res.sendStatus(403);
     req.uuid = uuid;
     next();
@@ -52,8 +51,9 @@ function auth(req, res, next) {
 app.get("/", (req, res) => {
   if (req.query.token) {
     res.render("index", { token: req.query.token });
+  } else {
+    res.render("index");
   }
-  res.render("index");
 });
 
 app.get("/index-auth", auth, (_, res) => {

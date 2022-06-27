@@ -12,13 +12,12 @@ html
   body
     .w-full.h-full.flex.justify-center.items-center.bg-slate-300
       .bg-slate-100.rounded-lg.p-4.w-96 
-        if error
-          .info.error
-            .flex.flex-row
-              .title.font-semibold.mr-4= error.title
-              .message.font-normal= error.message
+        .info.hidden.text-sm
+          .flex.flex-row
+            .title.font-semibold.mr-4
+            .message.font-normal
 
-        form#form-signup(data-parsley-validate).flex.flex-col.space-y-1(action="/signup" method="post")
+        form#form-signup.flex.flex-col(data-parsley-validate action="/signup" method="post")
           label(for="email") Email * :
           - var email = form ? form.email : ''
           input(type="email" name="email" data-parsley-trigger="change" value=email required)
@@ -46,3 +45,4 @@ html
     script
       include ../node_modules/jquery/dist/jquery.min.js
       include ../node_modules/parsleyjs/dist/parsley.min.js
+      include dist/signup.js
