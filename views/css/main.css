@@ -7,6 +7,17 @@ body {
   @apply w-full h-full text-gray-600;
 }
 
+.header-menu-item {
+  @apply h-12 border-b border-slate-300 select-none py-3 cursor-pointer;
+  @apply sm:h-full pl-4 sm:border-none sm:border dark:border-slate-400 sm:py-5;
+  @apply dark:border-slate-400;
+  @apply dark:hover:text-slate-300 hover:text-slate-500;
+}
+
+.header-menu-item.selected {
+  @apply sm:rounded-md bg-sky-500 sm:px-3 sm:pt-1 sm:h-8 sm:mt-4 text-slate-100 cursor-default hover:text-slate-100;
+}
+
 input {
   @apply p-1 border border-slate-200 outline-2 outline-sky-200 outline-offset-4 !important;
 }
@@ -64,7 +75,7 @@ input.btn,
   width: 100%;
 }
 
-a {
+form a {
   @apply underline text-blue-500;
 }
 

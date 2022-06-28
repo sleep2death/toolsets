@@ -1,0 +1,29 @@
+mixin header(middle_items= [], end_items= [])
+  include ../icon
+  .flex.w-full.bg-slate-200.flex-col(class="dark:bg-slate-800 dark:text-slate-100 sm:flex-row")
+    // left
+    .h-16.border-b.border-slate-300(class="sm:border-none dark:border-slate-400")
+      block left
+        a.flex.flex-row.mt-5.mx-2.h-6(href='/')
+          .select-none.rounded-l-lg.text-sm.bg-sky-600.px-2.text-white.font-bold.rounded-l-md(class='pt-0.5') TOOLSETS
+          .select-none.rounded-r-lg.text-xs.bg-slate-50.px-2(class='pt-1 dark:text-slate-600') v0.0.3
+    // middle
+    .flex.flex-col.h-full.mx-0(class="sm:mx-10 sm:grow sm:flex-row sm:justify-start sm:space-x-8 dark:bg-slate-700 dark:sm:bg-slate-800")
+      block middle
+        each item in middle_items
+          if item.selected
+            .header-menu-item(class='selected')
+              .flex.flex-row
+                if item.icon
+                  +icon(item.icon)
+                div= item.name
+          else
+            a.header-menu-item(href=item.link class=item.selected?'selected':'')
+              .flex.flex-row
+                if item.icon
+                  +icon(item.icon)
+                div= item.name
+    // right
+    .h-full.mx-2.mx-0(class="sm:mx-4")
+      block right
+        .header-menu-item ITEM-IV
