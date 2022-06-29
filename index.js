@@ -9,6 +9,7 @@ import { createClient } from "redis";
 
 import { ensureAdmin, getSignupHandler, getLoginHandler } from "./lib/auth.js";
 import { getUserInfoHandler } from "./lib/users.js";
+import { isAdmin, getAllUsers } from "./lib/admin.js";
 
 dotenv.config();
 
@@ -57,17 +58,33 @@ app.get("/", (_, res) => {
 
 app.post("/", auth, getUserInfoHandler(rds), (req, res) => {
   // delete password from user-info
-  delete req.user.pwd;
   res.render("index", { user: req.user });
 });
 
-// setting page
-app.get("/settings", (_, res) => {
+// admin page
+app.get("/admin", (_, res) => {
+  res.redirect("/admin/users");
+});
+
+// manage users
+app.get("/admin/users", (_, res) => {
   res.render("redirect");
 });
 
-app.post("/settings", auth, (_, res) => {
-  res.render("settings");
+app.post(
+  "/admin/users",
+  auth,
+  getUserInfoHandler(rds),
+  isAdmin,
+  getAllUsers(rds),
+  (req, res) => {
+    res.render("admin-users", { user: req.user, users: req.users });
+  }
+);
+
+// 404 handler
+app.get("/error", (req, res) => {
+  res.render("error", { status: req.query.code ? req.query.code : 0 });
 });
 
 // handlers

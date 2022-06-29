@@ -1,0 +1,20 @@
+extends html
+block content
+  .pt-4.pl-4
+    case status
+     when '400'
+      p Bad request, please retry:
+      a(href='/') homepage
+     when '401'
+      p Request unauthorized, please login:
+      a(href='/login') login
+     when '403'
+      p Request forbidden, please login:
+      a(href='/login') login
+     when '404'
+      p Page not found, please retry:
+      a(href='/') login
+     default
+      p Oops, something wrong, please retry:
+      a(href='/') homepage
+block scripts

@@ -4,18 +4,62 @@
 
 html,
 body {
-  @apply w-full h-full text-gray-600;
+  @apply w-full h-full text-gray-600 dark:text-gray-200;
+}
+
+a {
+  @apply underline text-sky-600 dark:text-gray-200;
+}
+
+a.header-menu-item {
+  @apply text-gray-600 dark:text-gray-200 no-underline;
 }
 
 .header-menu-item {
   @apply h-12 border-b border-slate-300 select-none py-3 cursor-pointer;
-  @apply sm:h-full pl-4 sm:border-none sm:border dark:border-slate-400 sm:py-5;
+  @apply sm:h-full pl-4 sm:border-none sm:border sm:py-5;
   @apply dark:border-slate-400;
-  @apply dark:hover:text-slate-300 hover:text-slate-500;
+  @apply dark:hover:text-gray-300 hover:text-gray-800;
 }
 
 .header-menu-item.selected {
-  @apply sm:rounded-md bg-sky-500 sm:px-3 sm:pt-1 sm:h-8 sm:mt-4 text-slate-100 cursor-default hover:text-slate-100;
+  @apply w-full sm:w-fit sm:rounded-md bg-sky-500 sm:px-3 sm:pt-1 sm:h-8 self-center text-slate-100 cursor-default hover:text-slate-100;
+}
+
+.switch {
+  @apply relative inline-block w-10 h-6;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  @apply w-0 h-0 opacity-0;
+}
+
+/* The slider */
+.slider {
+  @apply absolute left-0 top-0 right-0 bottom-0 bg-gray-400 duration-200;
+}
+
+.slider:before {
+  @apply absolute w-5 h-5 left-0.5 top-0.5 bg-white duration-200;
+  content: "";
+}
+
+input:checked + .slider {
+  @apply bg-sky-500;
+}
+
+input:checked + .slider:before {
+  @apply translate-x-4;
+}
+
+/* Rounded sliders */
+.slider.round {
+  @apply rounded-full;
+}
+
+.slider.round:before {
+  @apply rounded-full;
 }
 
 input {

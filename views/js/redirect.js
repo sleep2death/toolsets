@@ -9,7 +9,6 @@ function loadPage() {
     headers: { Authorization: "Bearer " + jwt },
     method: "POST",
     error: function (err) {
-      console.log(err);
       switch (err.status) {
         case 400:
           console.error("bad request");
@@ -24,6 +23,7 @@ function loadPage() {
           console.error("oops, something wrong...");
           break;
       }
+      window.location.replace(`/error?code=${err.status}`);
     },
     success: function (res) {
       $("#page-holder").html(res);

@@ -1,6 +1,8 @@
 .flex.flex-col
   // header
   include components/header
-  +header([{name: 'item-A', link: 'link-A', icon: 'M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z', selected: true}])
-  script.
-    document.documentElement.classList.add('dark');
+  - var itemA = {name: 'item-A', link: 'link-A', selected: true}
+  - var itemB = {name: 'item-B', link: 'link-B'}
+  - var menu = [itemA, itemB]
+  +header(menu)
+  div.user=user.role
