@@ -5,13 +5,84 @@
   - menuB = []
   - menuB.push({name: 'Admin', link: '/admin', selected: true, icon: 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2'})
   +header(menuA, menuB)
-
+  .flex.flex-col.alerts
+    .origin.alert.hidden
+      .flex.flex-row
+        .head-icon 
+          +icon('')
+        .grow  Hello World!
+        .close-btn 
+          +icon('M6 18L18 6M6 6l12 12')
+  .panel
+    .header
+      +icon('M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z')
+      div Users
+    .body
+      table.table-auto
+        thead 
+          tr 
+            th Email
+            th Nickname
+            th Role
+            th Active
+            th Edit
+        tbody
+          each user in users
+            tr
+              td= user.email
+              td= user.nickname
+              td= user.role
+              td 
+                label.switch.self-center.mr-1
+                  if user.active && user.active === 'true'
+                    input.active-btn(type="checkbox" data-email= user.email checked)
+                  else
+                    input.active-btn(type="checkbox" data-email= user.email)
+                  span.slider.round
+              td
+                a(href='/u/edit/'+user.email)
+                  +icon('M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z')
 script.
-  $('#logout').on('click', ()=>{
-    sessionStorage.clear()
-    window.location.replace("/");
+  $('.origin.alert .close-btn').on('click', function() {
+      $(this).parent().parent().toggle()
+    })
+
+  $('.active-btn').on('change', function() {
+    const email = $(this).data('email')
+    if (!email) {
+      return alert('email not exist...', 2000)
+    }
+
+    const checked = $(this).prop('checked')
+    $.ajax(
+      {
+        url: '/api/user-active',
+        headers: { Authorization: "Bearer " + jwt },
+        method: 'POST', 
+        data: {email: email, active: $(this).prop('checked') ? 'true':'false'},
+        success: res => {
+          console.log(res)
+        },
+        error: err => {
+          console.error(err)
+        }
+      }
+    )
   })
 
-  $('#settings').on('click', ()=> {
-    window.location.replace("/settings");
-  })
+  function alert(info, timeout) {
+    const alert = $('.origin.alert').clone(true)
+    alert.addClass('danger')
+    alert.removeClass('origin')
+    alert.find('.head-icon path').attr('d', 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z')
+    alert.addClass('danger')
+
+    $('.alerts').append(alert)
+    alert.toggle()
+    alert.find('.grow').text(info)
+    if (timeout && timeout > 0) {
+      setTimeout(function() {
+        alert.toggle(false)
+      }, timeout)
+    }
+  }

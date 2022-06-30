@@ -5,12 +5,14 @@
 html,
 body {
   @apply w-full h-full text-gray-600 dark:text-gray-200;
+  @apply bg-white dark:bg-slate-600;
 }
 
-a {
+.error a {
   @apply underline text-sky-600 dark:text-gray-200;
 }
 
+/* header menu item */
 a.header-menu-item {
   @apply text-gray-600 dark:text-gray-200 no-underline;
 }
@@ -26,6 +28,7 @@ a.header-menu-item {
   @apply w-full sm:w-fit sm:rounded-md bg-sky-500 sm:px-3 sm:pt-1 sm:h-8 self-center text-slate-100 cursor-default hover:text-slate-100;
 }
 
+/* toggle button */
 .switch {
   @apply relative inline-block w-10 h-6;
 }
@@ -60,6 +63,41 @@ input:checked + .slider:before {
 
 .slider.round:before {
   @apply rounded-full;
+}
+
+/* alert */
+.alert {
+  @apply container self-center mt-2;
+}
+
+.alert.danger {
+  @apply dark:bg-rose-900 bg-rose-200 rounded-md px-2 py-1;
+}
+
+/* panel */
+.panel {
+  @apply container self-center flex flex-col mt-4;
+}
+
+.panel .header {
+  @apply rounded-t-md h-10 pt-2 px-2 bg-slate-200 dark:bg-slate-800 select-none flex flex-row;
+  @apply font-medium !important;
+}
+
+.panel .body {
+  @apply rounded-b-md h-fit p-2 bg-slate-100 dark:bg-slate-700 flex flex-col;
+}
+
+.panel thead th {
+  @apply font-light text-left border-b border-slate-400 !important;
+}
+
+.panel tr {
+  @apply border-b even:dark:bg-slate-600 border-slate-300 dark:border-slate-400 even:bg-slate-300 last:border-0 text-sm;
+}
+
+.panel tr td {
+  @apply py-2 px-1;
 }
 
 input {
@@ -204,9 +242,6 @@ textarea.parsley-error {
   @apply font-semibold;
 }
 
-/**************************\
-  Demo Animation Style
-\**************************/
 @keyframes mmfadeIn {
   from {
     opacity: 0;

@@ -82,6 +82,24 @@ app.post(
   }
 );
 
+app.post(
+  "/api/user-active",
+  auth,
+  getUserInfoHandler(rds),
+  isAdmin,
+  async (req, res) => {
+    const uuid = await rds.GET(`email:${req.body.email}`);
+    if (!uuid) {
+      return res.sendStatus(400);
+    }
+
+    console.log(req.body.active, uuid);
+    await rds.HSET(`uuid:${uuid}`, "active", req.body.active);
+    // res.render("admin-users", { user: req.user, users: req.users });
+    res.send("ok");
+  }
+);
+
 // 404 handler
 app.get("/error", (req, res) => {
   res.render("error", { status: req.query.code ? req.query.code : 0 });
