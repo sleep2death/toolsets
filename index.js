@@ -38,6 +38,8 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json()); // for json
 app.use(express.urlencoded({ extended: true })); // for form data
 
+app.use(express.static("public"));
+
 function auth(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -82,23 +84,45 @@ app.post(
   }
 );
 
+// set user active
 app.post(
   "/api/user-active",
   auth,
   getUserInfoHandler(rds),
   isAdmin,
   async (req, res) => {
-    const uuid = await rds.GET(`email:${req.body.email}`);
-    if (!uuid) {
-      return res.sendStatus(400);
+    try {
+      const uuid = await rds.GET(`email:${req.body.email}`);
+      if (!uuid) {
+        return res.sendStatus(400);
+      }
+      await rds.HSET(`uuid:${uuid}`, "active", req.body.active);
+      res.send({ ok: true });
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(500);
     }
-
-    console.log(req.body.active, uuid);
-    await rds.HSET(`uuid:${uuid}`, "active", req.body.active);
-    // res.render("admin-users", { user: req.user, users: req.users });
-    res.send("ok");
   }
 );
+
+app.get("/u/edit/:email", (_, res) => {
+  res.render("redirect");
+});
+
+app.post("/u/edit/:email", auth, getUserInfoHandler(rds), async (req, res) => {
+  if (req.user.email !== req.params.email && req.user.role !== "admin") {
+    return res.sendStatus(403);
+  }
+
+  const uuid = await rds.GET(`email:${req.params.email}`);
+  if (!uuid) return res.sendStatus(400);
+
+  const user = await rds.HGETALL(`uuid:${uuid}`);
+  if (!user) return res.sendStatus(400);
+
+  delete user.pwd;
+  res.render("edit-user", { target: user });
+});
 
 // 404 handler
 app.get("/error", (req, res) => {

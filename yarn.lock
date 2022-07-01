@@ -672,6 +672,11 @@ croner@~4.1.92:
   resolved "https://registry.npmmirror.com/croner/-/croner-4.1.97.tgz#6e373dc7bb3026fab2deb0d82685feef20796766"
   integrity sha512-/f6gpQuxDaqXu+1kwQYSckUglPaOrHdbIlBAu0YuW8/Cdb45XwXYNUBXg3r/9Mo6n540Kn/smKcZWko5x99KrQ==
 
+cropperjs@^1.5.12:
+  version "1.5.12"
+  resolved "https://registry.npmmirror.com/cropperjs/-/cropperjs-1.5.12.tgz#d9c0db2bfb8c0d769d51739e8f916bbc44e10f50"
+  integrity sha512-re7UdjE5UnwdrovyhNzZ6gathI4Rs3KGCBSc8HCIjUo5hO42CtzyblmWLj6QWVw7huHyDMfpKxhiO2II77nhDw==
+
 cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmmirror.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
@@ -1259,6 +1264,11 @@ isarray@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmmirror.com/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
   integrity sha512-D2S+3GLxWH+uhrNEcoh/fnmYeP8E8/zHl644d/jdA0g2uyXvy3sb0qxotE+ne0LtccHknQzWwZEzhak7oJ0COQ==
+
+jquery-cropper@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmmirror.com/jquery-cropper/-/jquery-cropper-1.0.1.tgz#6ba9faf1c2c86c0ac3c648d40554ba53673113cf"
+  integrity sha512-KGlY8b0IJQi2Bxe3lqMKmd5Z2Ce4GrnDE5O8Iciza9xCzXISkL6EqX/jFHwnLL1H6Q4FGjoRguuv3lxezsbKJQ==
 
 jquery@>=1.8.0, jquery@^3.6.0:
   version "3.6.0"

@@ -1,9 +1,0 @@
-mixin sub-button(id, title, selected= false)
-  if selected
-    button.h-full.flex.flex-col.justify-center.text-sky-700.cursor-default(id=id)
-      .flex.flex-row.justify-center.mx-1.px-2.py-1.underline.underline-offset-8
-        .select-none= title
-  else
-    button.h-full.flex.flex-col.justify-center.text-sky-600(id=id class="hover:text-sky-700")
-      .flex.flex-row.justify-center.mx-4
-        .select-none= title

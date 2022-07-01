@@ -74,9 +74,13 @@ input:checked + .slider:before {
   @apply dark:bg-rose-900 bg-rose-200 rounded-md px-2 py-1;
 }
 
+.alert.success {
+  @apply dark:bg-emerald-900 bg-emerald-200 rounded-md px-2 py-1;
+}
+
 /* panel */
 .panel {
-  @apply container self-center flex flex-col mt-4;
+  @apply px-4 flex flex-col mt-4;
 }
 
 .panel .header {
@@ -106,7 +110,7 @@ input {
 
 input.btn,
 .btn {
-  @apply border border-slate-400 px-4 py-2 rounded-md ml-2 cursor-pointer !important;
+  @apply border border-slate-400 px-4 py-2 rounded-md cursor-pointer !important;
 }
 
 .info {
