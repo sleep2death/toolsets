@@ -1,0 +1,15 @@
+extends html
+
+block content
+  section.header
+  section.main
+    .content-row
+      .h-center
+        .panel
+          .bg-sky-600 Loading page...
+  section.footer
+block script
+  script
+    include ../node_modules/jquery/dist/jquery.min.js
+    include dist/utils.js
+    include dist/redirect.js

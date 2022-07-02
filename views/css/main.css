@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  @apply h-full text-slate-800 overflow-hidden;
+}
+
+body {
+  @apply bg-slate-100 border-slate-200;
+}
+
+#root {
+  @apply flex flex-col grow min-h-screen overflow-hidden;
+}
+
+.main {
+  @apply grow;
+}
+
+.content-row {
+  @apply min-h-full flex flex-row justify-center;
+}
+
+.h-center {
+  @apply grow flex flex-col justify-center max-w-xs;
+}
+
+.panel {
+  @apply w-full p-6 bg-white border;
+}
+
+form input {
+  @apply w-full bg-slate-100 border h-10 py-1 px-2 outline-1 outline-slate-500 box-border;
+}
+
+.animated-label:first-child {
+  @apply mt-0;
+}
+.animated-label {
+  @apply relative mt-6;
+}
+
+.animated-label label {
+  @apply absolute bottom-2 left-2 w-full text-slate-500;
+  transition: 0.2s all ease;
+}
+
+.animated-label.enabled label {
+  @apply bottom-10 text-sm;
+}
+
+.submit-btn {
+  @apply w-full rounded-md bg-sky-400 p-2 font-semibold text-white disabled:bg-sky-200;
+}
+
+#bottom-slider {
+  @apply absolute w-full bottom-0 flex justify-center;
+  transform: translateY(100%);
+  -webkit-transform: translateY(100%);
+}
+
+.slide-in {
+  animation: slide-in 0.2s forwards;
+  -webkit-animation: slide-in 0.2s forwards;
+}
+
+.slide-out {
+  animation: slide-out 0.2s forwards;
+  -webkit-animation: slide-out 0.2s forwards;
+}
+
+@keyframes slide-in {
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@-webkit-keyframes slide-in {
+  100% {
+    -webkit-transform: translateY(0%);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@-webkit-keyframes slide-out {
+  0% {
+    -webkit-transform: translateY(0%);
+  }
+  100% {
+    -webkit-transform: translateY(100%);
+  }
+}

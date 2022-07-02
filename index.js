@@ -1,16 +1,13 @@
 import express from "express";
-import morgan from "morgan";
-import jwt from "jsonwebtoken";
-
-import assert from "node:assert";
-import dotenv from "dotenv";
-
 import { createClient } from "redis";
+import morgan from "morgan";
+import dotenv from "dotenv";
+import assert from "node:assert/strict";
 
-import { ensureAdmin, getSignupHandler, getLoginHandler } from "./lib/auth.js";
-import { getUserInfoHandler } from "./lib/users.js";
-import { isAdmin, getAllUsers } from "./lib/admin.js";
+import { login } from "./lib/auth.js";
+import home from "./lib/home.js";
 
+// load .env file
 dotenv.config();
 
 const rds = createClient();
@@ -19,8 +16,6 @@ rds.on("error", (err) => console.error("Redis Client Error", err));
 await rds.connect();
 let res = await rds.ping();
 assert.equal(res, "PONG", "redis ping failed");
-
-await ensureAdmin(rds);
 
 const app = express();
 const port = 3000;
@@ -37,111 +32,14 @@ if (process.env.NODE_ENV === "development") {
 // parse json form
 app.use(express.json()); // for json
 app.use(express.urlencoded({ extended: true })); // for form data
-
 app.use(express.static("public"));
 
-function auth(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (token == null) return res.sendStatus(401);
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, jwt) => {
-    if (err) return res.sendStatus(403);
-    req.jwt = jwt;
-    next();
-  });
-}
-
-// home page
-app.get("/", (_, res) => {
-  res.render("redirect");
+app.get("/api/ping", (_, res) => {
+  res.send("pong");
 });
 
-app.post("/", auth, getUserInfoHandler(rds), (req, res) => {
-  // delete password from user-info
-  res.render("index", { user: req.user });
-});
-
-// admin page
-app.get("/admin", (_, res) => {
-  res.redirect("/admin/users");
-});
-
-// manage users
-app.get("/admin/users", (_, res) => {
-  res.render("redirect");
-});
-
-app.post(
-  "/admin/users",
-  auth,
-  getUserInfoHandler(rds),
-  isAdmin,
-  getAllUsers(rds),
-  (req, res) => {
-    res.render("admin-users", { user: req.user, users: req.users });
-  }
-);
-
-// set user active
-app.post(
-  "/api/user-active",
-  auth,
-  getUserInfoHandler(rds),
-  isAdmin,
-  async (req, res) => {
-    try {
-      const uuid = await rds.GET(`email:${req.body.email}`);
-      if (!uuid) {
-        return res.sendStatus(400);
-      }
-      await rds.HSET(`uuid:${uuid}`, "active", req.body.active);
-      res.send({ ok: true });
-    } catch (err) {
-      console.error(err);
-      res.sendStatus(500);
-    }
-  }
-);
-
-app.get("/u/edit/:email", (_, res) => {
-  res.render("redirect");
-});
-
-app.post("/u/edit/:email", auth, getUserInfoHandler(rds), async (req, res) => {
-  if (req.user.email !== req.params.email && req.user.role !== "admin") {
-    return res.sendStatus(403);
-  }
-
-  const uuid = await rds.GET(`email:${req.params.email}`);
-  if (!uuid) return res.sendStatus(400);
-
-  const user = await rds.HGETALL(`uuid:${uuid}`);
-  if (!user) return res.sendStatus(400);
-
-  delete user.pwd;
-  res.render("edit-user", { target: user });
-});
-
-// 404 handler
-app.get("/error", (req, res) => {
-  res.render("error", { status: req.query.code ? req.query.code : 0 });
-});
-
-// handlers
-app.get("/signup", (_, res) => {
-  res.render("signup");
-});
-
-// handlers
-app.get("/login", (_, res) => {
-  res.render("login");
-});
-
-// auth handlers
-app.post("/signup", getSignupHandler(rds));
-app.post("/login", getLoginHandler(rds));
+login(app, rds);
+home(app, rds);
 
 app.listen(port, () => {
   console.log(`user app listening on port ${port}`);
