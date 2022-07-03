@@ -1,0 +1,22 @@
+section.header
+  include components/header
+section.main
+  div= user.email
+section.footer
+
+script.
+  document.title = 'Welcome'
+// load avatars for self
+if user.avatar
+  script.
+    $(document).ready(async () => {
+      const result = await getAvatar('!{user.avatar}')
+      $('.avatar.self').html(result)
+    })
+else
+  script.
+    $(document).ready(async () => {
+      const result = await getAvatar('!{user.nickname}')
+      $('.avatar.self').html(result)
+    })
+
