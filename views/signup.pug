@@ -2,7 +2,6 @@ extends html
 
 block content
   section.header
-    div header
   section.main
     .content-row
       .h-center
@@ -12,15 +11,17 @@ block content
               input(type="email", id="email", name= 'email', required)
               label(for="email") Email
             .animated-label
-              input(type="text", id="nickname", name="nickname", required)
-              label(for="nickname") Nickname
-            .animated-label
               input(type="password", id="pwd", name="pwd", required)
               label(for="password") Password
+            .animated-label
+              input(type="text", id="nickname", name="nickname", required)
+              label(for="nickname") Nickname
             .mt-4
               input.submit-btn(type="submit" value="Signup")
+          .flex.flex-row.justify-end
+            span or
+            a.ml-2.underline.text-sky-500(href='/login') Login
   section.footer
-    div footer
 
 block script
   script

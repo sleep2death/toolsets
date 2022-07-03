@@ -31,7 +31,7 @@ $("#login").on("submit", async function (evt) {
 
     setTimeout(() => {
       window.location.replace("/");
-    }, 1500);
+    }, 1000);
   } catch (err) {
     danger(err);
     setTimeout(() => {

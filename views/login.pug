@@ -2,7 +2,6 @@ extends html
 
 block content
   section.header
-    div header
   section.main
     .content-row
       .h-center
@@ -16,8 +15,10 @@ block content
               label(for="password") Password
             .mt-4
               input.submit-btn(type="submit" value="Login")
+          .flex.flex-row.justify-end
+            span.text-slate-600 or
+            a.ml-1.underline.text-sky-500(href='/signup') Signup
   section.footer
-    div footer
 
 block script
   script

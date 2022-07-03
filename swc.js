@@ -21,13 +21,25 @@ const args = yargs(hideBin(process.argv))
 console.log("watch the javascript files for compiling...");
 console.log("input:", args.input, "| output:", args.output);
 
-chokidar.watch(`${args.input}/*.js`).on("change", async (filepath) => {
-  const source = await fs.readFile(filepath);
-  const filename = path.parse(filepath).base;
+const files = await fs.readdir(args.input);
+files.forEach(async (file) => {
+  if (path.parse(file).ext === ".js") {
+    await compile(`${args.input}/${file}`, `${args.output}/${file}`);
+  }
+});
 
-  console.log("compiling", filepath);
+chokidar.watch(`${args.input}/*.js`).on("change", async (filepath) => {
+  const base = path.parse(filepath).base;
+  await compile(filepath, `${args.output}/${base}`);
+});
+
+async function compile(source, target) {
+  const src = await fs.readFile(source);
+
+  console.log("compiling", source);
+  const start = new Date().getTime();
   try {
-    const result = await swc.transform(source.toString(), {
+    const result = await swc.transform(src.toString(), {
       sourceMaps: true,
       isModule: false,
       jsc: {
@@ -45,7 +57,7 @@ chokidar.watch(`${args.input}/*.js`).on("change", async (filepath) => {
           importMeta: false,
         },
         transform: null,
-        target: "es2022",
+        target: "es2019",
         loose: false,
         externalHelpers: false,
         // Requires v1.2.50 or upper and requires target to be es2016 or upper.
@@ -53,9 +65,9 @@ chokidar.watch(`${args.input}/*.js`).on("change", async (filepath) => {
       },
     });
 
-    await fs.writeFile(`${args.output}/${filename}`, result.code, "utf8");
-    console.log("Done");
+    await fs.writeFile(target, result.code, "utf8");
+    console.log("Done", target, new Date().getTime() - start + "ms");
   } catch (err) {
     console.error(err);
   }
-});
+}
