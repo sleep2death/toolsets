@@ -8,6 +8,8 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@dicebear/avatars": "^4.10.3",
+    "@dicebear/big-smile": "^4.10.3",
     "bcrypt": "^5.0.1",
     "detect-autofill": "^1.1.4",
     "dotenv": "^16.0.1",

@@ -1,1 +1,12 @@
-div HEADER
+// header.pug
+.px-3.flex.flex-wrap.bg-slate-200.h-16.items-center(class="md:px-4 lg:px-5 md:flex-nowrap")
+  block left
+    a.flex.flex-row.h-6(href='/')
+      .select-none.rounded-l-lg.text-sm.bg-sky-600.px-2.text-white.font-bold.rounded-l-md(class='pt-0.5') TOOLSETS
+      .select-none.rounded-r-lg.text-xs.bg-slate-50.px-2(class='pt-1 dark:text-slate-600') v0.0.3
+  .grow
+    block middle
+  block right
+    a.flex.flex-row.h-6(href='/')
+      .select-none.rounded-l-lg.text-sm.bg-sky-600.px-2.text-white.font-bold.rounded-l-md(class='pt-0.5') TOOLSETS
+      .select-none.rounded-r-lg.text-xs.bg-slate-50.px-2(class='pt-1 dark:text-slate-600') v0.0.3
