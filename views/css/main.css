@@ -101,3 +101,8 @@ form input {
     -webkit-transform: translateY(100%);
   }
 }
+
+.avatar {
+  clip-path: circle(12px at center);
+  @apply border border-slate-800;
+}

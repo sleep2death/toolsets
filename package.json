@@ -30,6 +30,7 @@
   },
   "scripts": {
     "serve": "pm2 start pm2.config.cjs --node-args='hello world'",
-    "stop": "pm2 delete all"
+    "stop": "pm2 delete all",
+    "log": "pm2 log all"
   }
 }
