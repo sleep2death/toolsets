@@ -6,6 +6,7 @@ import assert from "node:assert/strict";
 
 import { login } from "./lib/auth.js";
 import home from "./lib/home.js";
+import avatars from "./lib/avatars.js";
 
 // load .env file
 dotenv.config();
@@ -40,6 +41,7 @@ app.get("/api/ping", (_, res) => {
 
 login(app, rds);
 home(app, rds);
+avatars(app, rds);
 
 app.listen(port, () => {
   console.log(`user app listening on port ${port}`);

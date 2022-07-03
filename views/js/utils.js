@@ -15,6 +15,37 @@ async function fetchAPI(url, data) {
   return d;
 }
 
+async function fetchAPIWithJWT(url, data) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + jwt,
+    },
+    body: JSON.stringify(data),
+  });
+
+  const d = {};
+  d.ok = res.ok;
+  d.status = res.status;
+
+  d.json = await res.json();
+  return d;
+}
+
+async function getAvatar(seed) {
+  const d = await fetchAPIWithJWT("/api/avatars", { seed });
+  if (!d.ok) {
+    if (d.json) {
+      danger(d.json.msg);
+    } else {
+      danger("Cant get avatar: " + d.status);
+    }
+    return null;
+  }
+  return d.json.svg;
+}
+
 function danger(title) {
   $("#bottom-slider").removeClass("slide-out");
   $("#bottom-slider").addClass("slide-in");
