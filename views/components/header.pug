@@ -8,3 +8,17 @@
     block middle
   block right
     a.avatar.self.sm.w-8.h-8(href='/profile')
+
+// load avatars for self
+if user.avatar_seed
+  script.
+    $(document).ready(async () => {
+      const result = await getAvatar('!{user.avatar_seed}')
+      $('.avatar.self').html(result)
+    })
+else
+  script.
+    $(document).ready(async () => {
+      const result = await getAvatar('!{user.nickname}')
+      $('.avatar.self').html(result)
+    })

@@ -1,13 +1,13 @@
 section.header
-  include components/profile-header
+  include components/header
 section.main.overflow-y-auto
   .content-row
-    .h-center
+    .h-top
       .panel
-        .font-semibold.mb-6.select-none
-          span PROFILE
-        #avatar.p-4.rounded-full.bg-slate-200(style='clip-path: circle(104px at center)')
-        form.pt-4#profile(method="post" action='/profile')
+        .font-semibold.select-none.text-sm
+          span Profile
+        #avatar.px-12
+        form.mt-2#profile(method="post" action='/profile')
           .animated-label.enabled.mt-0
             input(type="text", id="seed", name="seed", required value= user.avatar_seed? user.avatar_seed : user.nickname)
             label(for="seed") Avatar seed
@@ -19,69 +19,31 @@ section.main.overflow-y-auto
             label(for="nickname") Nickname
           .mt-4
             input.submit-btn(type="submit" value="Update")
+      .flex.flex-col.w-full.space-y-4
+        .panel
+          .font-semibold.mb-6.select-none.text-sm
+            span Password
+          form#password(method="post" action='/profile')
+            .animated-label.mt-0
+              input(type="password", id="o-password", name="o-password", required)
+              label(for="o-password") Old Password
+            .animated-label
+              input(type="password", id="n-password", name="n-password", required)
+              label(for="n-password") New Password
+            .animated-label
+              input(type="password", id="r-password", name="r-password", required)
+              label(for="r-password") Re-enter Password
+            .mt-4
+              input.submit-btn(type="submit" value="Update")
+        if user.role === 'admin'
+          .panel
+            .font-semibold.mb-6.select-none.text-sm
+              span.text- Admin Area
+            .flex.flex-row.space-x-4.text-sky-500.underline
+              a Status
+              a(href='/admin/users') Users
 section.footer
-
 script.
   document.title = 'Profile'
-// load avatars for self
-if user.avatar_seed
-  script.
-    $(document).ready(async () => {
-      const result = await getAvatar('!{user.avatar_seed}')
-      $('.avatar.self').html(result)
-    })
-else
-  script.
-    $(document).ready(async () => {
-      const result = await getAvatar('!{user.nickname}')
-      $('.avatar.self').html(result)
-    })
-script.
-  $("input").on("change input", function () {
-    if ($(this).val().length > 0) {
-      $(this).parent().addClass("enabled");
-    } else {
-      $(this).parent().removeClass("enabled");
-    }
-  });
-
-  $(document).ready(async () => {
-    const result = await getAvatar($('#seed').val())
-    $('#avatar').html(result)
-  })
-
-  $('#seed').on('change input', async function(evt) {
-    const seed = $('#seed').val()
-    if (seed.length > 3) {
-      const result = await getAvatar($('#seed').val())
-      $('#avatar').html(result)
-    }
-  })
-
-  $('#profile').on('submit', async function(evt) {
-    evt.preventDefault();
-    $(".submit-btn").prop("disabled", true);
-    try {
-      const data = new FormData(evt.target);
-      const result = await fetchAPIWithJWT("/api/profile/save", {
-        email: data.get("email"),
-        nickname: data.get("nickname"),
-        seed: data.get("seed"),
-      });
-
-      if (!result.ok) {
-        if (result.json) throw new Error(result.json.msg);
-        throw new Error(result.status);
-      }
-      success("Profile updated");
-
-      setTimeout(() => {
-        $(".submit-btn").removeAttr("disabled");
-      }, 1000);
-    } catch (err) {
-      danger(err);
-      setTimeout(() => {
-        $(".submit-btn").removeAttr("disabled");
-      }, 2000);
-    }
-  })
+script
+  include dist/profile.js

@@ -5,7 +5,7 @@
 html,
 body,
 #root {
-  @apply h-full text-slate-800 overflow-hidden;
+  @apply h-full text-slate-600 text-sm overflow-hidden;
 }
 
 body {
@@ -25,11 +25,15 @@ body {
 }
 
 .h-center {
-  @apply grow flex flex-col justify-center max-w-xs;
+  @apply grow flex flex-col justify-center max-w-sm;
+}
+
+.h-top {
+  @apply grow flex flex-col max-w-sm justify-center m-4 md:m-4 md:flex-row md:max-w-2xl md:space-x-4;
 }
 
 .panel {
-  @apply w-full p-6 bg-white border;
+  @apply w-full p-6 bg-white border mt-4 md:mt-0 h-fit;
 }
 
 form input {

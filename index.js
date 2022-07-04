@@ -4,7 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import assert from "node:assert/strict";
 
-import { login } from "./lib/auth.js";
+import { auth } from "./lib/auth.js";
 import home from "./lib/home.js";
 import avatars from "./lib/avatars.js";
 import profile from "./lib/profile.js";
@@ -40,7 +40,7 @@ app.get("/api/ping", (_, res) => {
   res.send("pong");
 });
 
-login(app, rds);
+auth(app, rds);
 home(app, rds);
 avatars(app, rds);
 profile(app, rds);
