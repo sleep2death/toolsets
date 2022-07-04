@@ -44,7 +44,7 @@ form input {
 }
 
 .animated-label label {
-  @apply absolute bottom-2 left-2 w-full text-slate-500;
+  @apply absolute bottom-2 left-2 w-full text-slate-500 pointer-events-none;
   transition: 0.2s all ease;
 }
 
@@ -100,9 +100,4 @@ form input {
   100% {
     -webkit-transform: translateY(100%);
   }
-}
-
-.avatar {
-  clip-path: circle(12px at center);
-  @apply border border-slate-800;
 }

@@ -1,16 +1,33 @@
 section.header
-  include components/header
-section.main
-  div= user.email
+  include components/profile-header
+section.main.overflow-y-auto
+  .content-row
+    .h-center
+      .panel
+        .font-semibold.mb-6.select-none
+          span PROFILE
+        #avatar.p-4.rounded-full.bg-slate-200(style='clip-path: circle(104px at center)')
+        form.pt-4#profile(method="post" action='/profile')
+          .animated-label.enabled.mt-0
+            input(type="text", id="seed", name="seed", required value= user.avatar_seed? user.avatar_seed : user.nickname)
+            label(for="seed") Avatar seed
+          .animated-label.enabled
+            input(type="email", id="email", name= 'email', required value= user.email)
+            label(for="email") Email
+          .animated-label.enabled
+            input(type="text", id="nickname", name="nickname", required value= user.nickname)
+            label(for="nickname") Nickname
+          .mt-4
+            input.submit-btn(type="submit" value="Update")
 section.footer
 
 script.
-  document.title = 'Welcome'
+  document.title = 'Profile'
 // load avatars for self
-if user.avatar
+if user.avatar_seed
   script.
     $(document).ready(async () => {
-      const result = await getAvatar('!{user.avatar}')
+      const result = await getAvatar('!{user.avatar_seed}')
       $('.avatar.self').html(result)
     })
 else
@@ -19,4 +36,52 @@ else
       const result = await getAvatar('!{user.nickname}')
       $('.avatar.self').html(result)
     })
+script.
+  $("input").on("change input", function () {
+    if ($(this).val().length > 0) {
+      $(this).parent().addClass("enabled");
+    } else {
+      $(this).parent().removeClass("enabled");
+    }
+  });
 
+  $(document).ready(async () => {
+    const result = await getAvatar($('#seed').val())
+    $('#avatar').html(result)
+  })
+
+  $('#seed').on('change input', async function(evt) {
+    const seed = $('#seed').val()
+    if (seed.length > 3) {
+      const result = await getAvatar($('#seed').val())
+      $('#avatar').html(result)
+    }
+  })
+
+  $('#profile').on('submit', async function(evt) {
+    evt.preventDefault();
+    $(".submit-btn").prop("disabled", true);
+    try {
+      const data = new FormData(evt.target);
+      const result = await fetchAPIWithJWT("/api/profile/save", {
+        email: data.get("email"),
+        nickname: data.get("nickname"),
+        seed: data.get("seed"),
+      });
+
+      if (!result.ok) {
+        if (result.json) throw new Error(result.json.msg);
+        throw new Error(result.status);
+      }
+      success("Profile updated");
+
+      setTimeout(() => {
+        $(".submit-btn").removeAttr("disabled");
+      }, 1000);
+    } catch (err) {
+      danger(err);
+      setTimeout(() => {
+        $(".submit-btn").removeAttr("disabled");
+      }, 2000);
+    }
+  })

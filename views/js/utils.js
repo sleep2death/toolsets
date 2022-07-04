@@ -11,7 +11,11 @@ async function fetchAPI(url, data) {
   d.ok = res.ok;
   d.status = res.status;
 
-  d.json = await res.json();
+  try {
+    d.json = await res.json();
+  } catch (err) {
+    console.error(err);
+  }
   return d;
 }
 
@@ -29,12 +33,16 @@ async function fetchAPIWithJWT(url, data) {
   d.ok = res.ok;
   d.status = res.status;
 
-  d.json = await res.json();
+  try {
+    d.json = await res.json();
+  } catch (err) {
+    console.error(err);
+  }
   return d;
 }
 
 async function getAvatar(seed) {
-  const d = await fetchAPIWithJWT("/api/avatars", { seed });
+  const d = await fetchAPIWithJWT("/api/avatar/seed", { seed });
   if (!d.ok) {
     if (d.json) {
       danger(d.json.msg);
