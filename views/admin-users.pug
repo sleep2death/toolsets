@@ -1,0 +1,55 @@
+section.header
+  include components/header
+  include components/icon
+section.main.overflow-y-auto
+  .content-row
+    .h-top
+      .panel.rounded-md
+        .font-semibold.select-none.pb-4.border-b
+          span Users
+        table.w-full.mt-4
+          tr
+            th Email
+            th(class="hidden md:table-cell") Email
+            th(class="hidden md:table-cell") Role
+            th(class="hidden md:table-cell") Active
+            th Edit
+          each u in users
+            tr.h-14
+              td= u.email
+              th.font-normal(class="hidden md:table-cell")= u.nickname
+              th.font-normal(class="hidden md:table-cell")= u.role
+              th.font-normal(class="hidden md:table-cell")
+                label.switch.self-center.mr-1
+                  if u.active && u.active === 'true'
+                    input.active-btn(type="checkbox" data-email= u.email checked)
+                  else
+                    input.active-btn(type="checkbox" data-email= u.email)
+                  span.slider.round
+              td.pl-10 
+                a(href='/admin/profile/'+u.email)
+                  +icon('M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z')
+section.footer
+script.
+  document.title = 'Admin'
+  $('.active-btn').on('change', async function(evt) {
+    evt.preventDefault();
+    $(this).prop("disabled", true);
+
+    const email = $(this).data('email')
+    const checked = $(this).prop('checked')
+    try {
+      const result = await fetchAPIWithJWT("/api/admin/active", {
+        email,
+        active: checked ? 'true':'false'
+      });
+
+      if (!result.ok) {
+        if (result.json) throw new Error(result.json.msg);
+        throw new Error(result.status);
+      }
+      success("Activation updated");
+    } catch (err) {
+      danger(err);
+    }
+  })
