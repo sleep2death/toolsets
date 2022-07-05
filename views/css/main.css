@@ -33,7 +33,7 @@ body {
 }
 
 .panel {
-  @apply w-full p-6 bg-white border mt-4 md:mt-0 h-fit;
+  @apply w-full p-6 bg-white border mt-4 md:mt-0 h-fit rounded-lg;
 }
 
 form input {

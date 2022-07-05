@@ -7,10 +7,10 @@ section.footer
 script.
   document.title = 'Welcome'
 // set avatars for self
-if user.avatar
+if user.avatar_seed
   script.
     $(document).ready(async () => {
-      const result = await getAvatar('!{user.avatar}')
+      const result = await getAvatar('!{user.avatar_seed}')
       $('.avatar.self').html(result)
     })
 else

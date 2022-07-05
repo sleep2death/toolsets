@@ -36,10 +36,10 @@ $("#profile").on("submit", async function (evt) {
       if (result.json) throw new Error(result.json.msg);
       throw new Error(result.status);
     }
-    success("Password updated, please login again");
+    success("Profile updated");
 
     setTimeout(() => {
-      window.location.replace("/login");
+      window.location.replace("/profile");
     }, 1000);
   } catch (err) {
     danger(err);
@@ -64,10 +64,10 @@ $("#password").on("submit", async function (evt) {
       if (result.json) throw new Error(result.json.msg);
       throw new Error(result.status);
     }
-    success("Profile updated");
+    success("Password updated, please login again");
 
     setTimeout(() => {
-      window.location.replace("/profile");
+      window.location.replace("/login");
     }, 1000);
   } catch (err) {
     danger(err);
