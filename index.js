@@ -8,6 +8,7 @@ import { auth } from "./lib/auth.js";
 import home from "./lib/home.js";
 import avatars from "./lib/avatars.js";
 import profile from "./lib/profile.js";
+import admin from "./lib/admin.js";
 
 // load .env file
 dotenv.config();
@@ -44,6 +45,7 @@ auth(app, rds);
 home(app, rds);
 avatars(app, rds);
 profile(app, rds);
+admin(app, rds);
 
 app.listen(port, () => {
   console.log(`user app listening on port ${port}`);
