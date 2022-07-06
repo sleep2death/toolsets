@@ -34,7 +34,8 @@ script.
   document.title = 'Admin'
   $('.active-btn').on('change', async function(evt) {
     evt.preventDefault();
-    $(this).prop("disabled", true);
+    // disable all active button
+    $('.active-btn').prop("disabled", true);
 
     const email = $(this).data('email')
     const checked = $(this).prop('checked')
@@ -49,6 +50,7 @@ script.
         throw new Error(result.status);
       }
       success("Activation updated");
+      $('.active-btn').prop("disabled", false);
     } catch (err) {
       danger(err);
     }

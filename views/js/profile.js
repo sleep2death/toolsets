@@ -76,3 +76,8 @@ $("#password").on("submit", async function (evt) {
     }, 2000);
   }
 });
+
+function signout() {
+  sessionStorage.removeItem("jwt");
+  window.location.replace('/login')
+}
