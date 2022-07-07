@@ -48,10 +48,10 @@ section.main.overflow-y-auto
               a(href='/admin/users') Users
               a.signout(href='javascript:void(0)' onclick='signout();') Signout
         else
-          .panel
-            .font-semibold.select-none.text-sm.flex.flex-row.justify-end
+          .font-semibold.select-none.justify-end.px-4(class='hover:text-sky-500')
+            a.flex.flex-row.cursor-point.justify-end.signout(href='javascript:void(0)' onclick='signout();') 
               +icon('M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1')
-              a.signout(href='javascript:void(0)' onclick='signout();') Signout
+              span Signout
 section.footer
 script.
   document.title = 'Profile'

@@ -109,7 +109,6 @@ $("#staff").on("submit", async function (evt) {
   }
 });
 
-function signout() {
-  sessionStorage.removeItem("jwt");
-  window.location.replace("/login");
+function back() {
+  window.location.replace("/admin/users");
 }
