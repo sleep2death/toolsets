@@ -2,8 +2,13 @@ section.header
   include components/header
 section.main
   div= user.email
+  #canvas
 section.footer
-
+script
+  include ../node_modules/three/build/three.min.js
+  include ../node_modules/three/examples/js/loaders/GLTFLoader.js
+  include ../node_modules/three/examples/js/controls/OrbitControls.js
+  include ./dist/home.js
 script.
   document.title = 'Welcome'
 // set avatars for self
@@ -19,4 +24,3 @@ else
       const result = await getAvatar('!{user.nickname}')
       $('.avatar.self').html(result)
     })
-

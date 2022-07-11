@@ -27,6 +27,9 @@ const port = 3000;
 app.set("view engine", "pug");
 app.set("views", "./views");
 
+// serve static files
+app.use("/public", express.static("public"));
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 } else {

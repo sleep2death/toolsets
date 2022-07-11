@@ -20,7 +20,8 @@
     "morgan": "^1.10.0",
     "parsleyjs": "^2.9.2",
     "pug": "^3.0.2",
-    "redis": "^4.1.0"
+    "redis": "^4.1.0",
+    "three": "^0.142.0"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.57",
